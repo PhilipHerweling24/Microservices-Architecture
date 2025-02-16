@@ -1,6 +1,6 @@
 package com.a00326153.library.controller;
 
-import com.a00326153.library.model.User;
+import com.a00326153.library.entity.User;
 import com.a00326153.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

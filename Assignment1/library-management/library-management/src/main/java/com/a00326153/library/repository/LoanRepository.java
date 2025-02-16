@@ -1,6 +1,6 @@
 package com.a00326153.library.repository;
 
-import com.a00326153.library.model.Loan;
+import com.a00326153.library.entity.Loan;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
 package com.a00326153.library.service;
 
-import com.a00326153.library.model.User;
+import com.a00326153.library.entity.User;
 import com.a00326153.library.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
