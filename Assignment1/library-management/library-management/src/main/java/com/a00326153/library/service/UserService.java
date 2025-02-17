@@ -1,6 +1,8 @@
 package com.a00326153.library.service;
 
+import com.a00326153.library.dto.UserDto;
 import com.a00326153.library.entity.User;
+import com.a00326153.library.mapper.UserMapper;
 import com.a00326153.library.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,25 +16,27 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User createUser(User user){
-        return userRepository.save(user);
+    public UserDto createUser(User user){
+        return UserMapper.mapToUserDto(userRepository.save(user));
     }
 
-    public User getUserById(Long id){
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User nt found with id: " + id));
+    public UserDto getUserById(Long id){
+        return UserMapper.mapToUserDto(userRepository.findById(id).orElseThrow(() -> new RuntimeException("User nt found with id: " + id)));
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream().map(user -> UserMapper.mapToUserDto(user)).toList();
     }
 
     @Transactional
-    public User updateUser(Long id, User updatedUser) {
-        User existingUser = getUserById(id);
-        existingUser.setName(updatedUser.getName());
-        existingUser.setEmail(updatedUser.getEmail());
-        return userRepository.save(existingUser);
+    public UserDto updateUser(Long id, UserDto updatedUserDto) {
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+        existingUser.setName(updatedUserDto.getName());
+        existingUser.setEmail(updatedUserDto.getEmail());
+
+        return UserMapper.mapToUserDto(userRepository.save(existingUser));
     }
+
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {

@@ -30,12 +30,12 @@ public class LoanService {
         this.bookRepository = bookRepository;
     }
 
-    public List<Loan> getAllLoans() {
-        return loanRepository.findAll();
+    public List<LoanDto> getAllLoans() {
+        return loanRepository.findAll().stream().map(loan -> LoanMapper.mapToLoanDto(loan)).toList();
     }
 
-    public Loan getLoanById(Long id) {
-        return loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Loan with not found with id: "+id));
+    public List<LoanDto> getLoanById(Long id) {
+        return loanRepository.findById(id).stream().map(loan -> LoanMapper.mapToLoanDto(loan)).toList();
     }
 
     public List<LoanDto> getLoansByUser(Long id){
@@ -43,12 +43,21 @@ public class LoanService {
         return loanRepository.findByUserId(id).stream().map(loan -> LoanMapper.mapToLoanDto(loan)).toList();
     }
 
+    public List<LoanDto> getLoansByBook(Long id){
+        return loanRepository.findByBookId(id).stream().map(loan -> LoanMapper.mapToLoanDto(loan)).toList();
+    }
+
     public LoanDto createLoan(Long userId, Long bookId){
-        User user = userRepository.findById(userId).orElseThrow();
-        Book book = bookRepository.findById(bookId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found, Ensure user has been created"));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found, Ensure book exists"));
 
         //TODO add if statement which checks avialable copies
+        if (book.getAvailableCopies() <=0){
+            throw new RuntimeException("No Available Copies left at his time.");
+        }
         //TODO lower availability count if book is available
+        book.setAvailableCopies(book.getAvailableCopies()-1);
+        bookRepository.save(book);
 
         Loan loan = new Loan();
         loan.setUser(user);
@@ -59,6 +68,28 @@ public class LoanService {
 
         return LoanMapper.mapToLoanDto(loanRepository.save(loan));
     }
+
+    public LoanDto returnBook(Long loanId){
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new RuntimeException("Loan not found with ID: "+loanId));
+
+        if (loan.isReturned()){
+            throw new RuntimeException("This book has already been returned!");
+        }
+
+        loan.setReturned(true);
+
+        Book book = loan.getBook();
+        book.setAvailableCopies(book.getAvailableCopies()+1);
+        bookRepository.save(book);
+        return LoanMapper.mapToLoanDto(loanRepository.save(loan));
+    }
+
+
+    public void deleteLoan(Long id){
+        loanRepository.deleteById(id);
+    }
+
+
 
 
 

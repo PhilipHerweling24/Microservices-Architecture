@@ -1,5 +1,6 @@
 package com.a00326153.library.controller;
 
+import com.a00326153.library.dto.BookDto;
 import com.a00326153.library.entity.Book;
 import com.a00326153.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,33 +21,33 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+    public ResponseEntity<BookDto> createBook(@RequestBody Book book) {
         return ResponseEntity.ok(bookService.createBook(book));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
+    @PutMapping("/books/{id}")
+    public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody Book book) {
         return ResponseEntity.ok(bookService.updateBook(id, book));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/books/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public List<Book> getAllBooks(){
+    public List<BookDto> getAllBooks(){
         return bookService.getAllBooks();
     }
 
     @GetMapping("/title")
-    public List<Book> searchBooksTitle(@RequestParam String title) {
+    public List<BookDto> searchBooksTitle(@RequestParam String title) {
         return bookService.searchBooksByTitle(title);
     }
 
     @GetMapping("/author")
-    public List<Book> searchBooksAuthor(@RequestParam String author) {
+    public List<BookDto> searchBooksAuthor(@RequestParam String author) {
         return bookService.searchBookByAuthor(author);
     }
 

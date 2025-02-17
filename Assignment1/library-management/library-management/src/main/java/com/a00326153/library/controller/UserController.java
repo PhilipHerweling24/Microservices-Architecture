@@ -1,5 +1,6 @@
 package com.a00326153.library.controller;
 
+import com.a00326153.library.dto.UserDto;
 import com.a00326153.library.entity.User;
 import com.a00326153.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +18,27 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<UserDto> createUser(@RequestBody User user){
         return ResponseEntity.ok(userSerivce.createUser(user));
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userSerivce.getAllUsers());
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    @GetMapping("/users/id")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userSerivce.getUserById(id));
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        return ResponseEntity.ok(userSerivce.updateUser(id, user));
+    @PutMapping("/users/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userSerivce.updateUser(id, userDto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userSerivce.deleteUser(id);
         return ResponseEntity.ok("Successfully deleted user with id: "+id);}
