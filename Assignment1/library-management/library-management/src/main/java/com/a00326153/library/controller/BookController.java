@@ -44,13 +44,13 @@ public class BookController {
     }
 
     @GetMapping("/title")
-    public List<BookDto> searchBooksTitle(@RequestParam String title) {
-        return bookService.searchBooksByTitle(title);
+    public ResponseEntity<List<BookDto>> searchBooksTitle(@RequestParam String title) {
+        return ResponseEntity.ok(bookService.searchBooksByTitle(title));
     }
 
     @GetMapping("/author")
-    public Page<BookDto> searchBooksAuthor(@RequestParam String author, Pageable pageable) {
-        return bookService.searchBookByAuthor(author, pageable);
+    public ResponseEntity<Page<BookDto>> searchBooksAuthor(@RequestParam String author, Pageable pageable) {
+        return ResponseEntity.ok(bookService.searchBookByAuthor(author, pageable));
     }
 
 

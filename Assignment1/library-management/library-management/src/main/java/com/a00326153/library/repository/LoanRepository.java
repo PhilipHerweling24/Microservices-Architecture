@@ -11,4 +11,6 @@ import java.util.List;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     Page<Loan> findByUserId(Long userId, Pageable pageable);
     Page<Loan> findByBookId(Long bookId, Pageable pageable);
+    Page<Loan> findTop10ByOrderByBorrowedDateDesc(Pageable pageable);
+    Page<Loan> findByDueDate(LocalDate dueDate, Pageable pageable);
 }

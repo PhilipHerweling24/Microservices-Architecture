@@ -4,6 +4,7 @@ import com.a00326153.library.dto.LoanDto;
 import com.a00326153.library.entity.Book;
 import com.a00326153.library.entity.Loan;
 import com.a00326153.library.entity.User;
+import com.a00326153.library.exception.ResourceNotFoundException;
 import com.a00326153.library.mapper.LoanMapper;
 import com.a00326153.library.repository.BookRepository;
 import com.a00326153.library.repository.LoanRepository;
@@ -50,8 +51,8 @@ public class LoanService {
     }
 
     public LoanDto createLoan(Long userId, Long bookId){
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found, Ensure user has been created"));
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found, Ensure book exists"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found, Ensure user has been created"));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException("Book not found, Ensure book exists"));
 
         //TODO add if statement which checks avialable copies
         if (book.getAvailableCopies() <=0){
@@ -88,7 +89,16 @@ public class LoanService {
 
 
     public void deleteLoan(Long id){
+        loanRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Loan not found, Ensure loan has been created"));
         loanRepository.deleteById(id);
+    }
+
+    public Page<LoanDto> getMostRecentLoans(Pageable pageable) {
+        return loanRepository.findTop10ByOrderByBorrowedDateDesc(pageable).map(loan -> LoanMapper.mapToLoanDto(loan));
+    }
+
+    public Page<LoanDto> getLoansByDueDate(LocalDate dueDate, Pageable pageable){
+        return loanRepository.findByDueDate(dueDate, pageable).map(loan -> LoanMapper.mapToLoanDto(loan));
     }
 
 
