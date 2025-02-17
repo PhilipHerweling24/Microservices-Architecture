@@ -6,6 +6,8 @@ import com.a00326153.library.mapper.UserMapper;
 import com.a00326153.library.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +26,8 @@ public class UserService {
         return UserMapper.mapToUserDto(userRepository.findById(id).orElseThrow(() -> new RuntimeException("User nt found with id: " + id)));
     }
 
-    public List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream().map(user -> UserMapper.mapToUserDto(user)).toList();
+    public Page<UserDto> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).map(user -> UserMapper.mapToUserDto(user));
     }
 
     @Transactional

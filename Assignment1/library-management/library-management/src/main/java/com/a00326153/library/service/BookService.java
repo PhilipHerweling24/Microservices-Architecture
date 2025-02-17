@@ -5,6 +5,8 @@ import com.a00326153.library.entity.Book;
 import com.a00326153.library.mapper.BookMapper;
 import com.a00326153.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,15 +44,15 @@ public class BookService {
     }
 
 
-    public List<BookDto> getAllBooks() {
-        return bookRepository.findAll().stream().map(book -> BookMapper.mapToBookDto(book)).toList();
+    public Page<BookDto> getAllBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable).map(book -> BookMapper.mapToBookDto(book));
     }
 
     public List<BookDto> searchBooksByTitle(String title){
         return bookRepository.findByTitleContainingIgnoreCase(title).stream().map(book -> BookMapper.mapToBookDto(book)).toList();
     }
 
-    public List<BookDto> searchBookByAuthor(String author){
-        return bookRepository.findByAuthorContainingIgnoreCase(author).stream().map(book -> BookMapper.mapToBookDto(book)).toList();
+    public Page<BookDto> searchBookByAuthor(String author, Pageable pageable){
+        return bookRepository.findByAuthorContainingIgnoreCase(author, pageable).map(book -> BookMapper.mapToBookDto(book));
     }
 }

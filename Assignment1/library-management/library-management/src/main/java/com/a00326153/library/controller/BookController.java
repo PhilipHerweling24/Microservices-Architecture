@@ -4,6 +4,8 @@ import com.a00326153.library.dto.BookDto;
 import com.a00326153.library.entity.Book;
 import com.a00326153.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,20 +27,20 @@ public class BookController {
         return ResponseEntity.ok(bookService.createBook(book));
     }
 
-    @PutMapping("/books/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody Book book) {
         return ResponseEntity.ok(bookService.updateBook(id, book));
     }
 
-    @DeleteMapping("/books/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public List<BookDto> getAllBooks(){
-        return bookService.getAllBooks();
+    public ResponseEntity<Page<BookDto>> getAllBooks(Pageable pageable){
+        return ResponseEntity.ok(bookService.getAllBooks(pageable));
     }
 
     @GetMapping("/title")
@@ -47,8 +49,8 @@ public class BookController {
     }
 
     @GetMapping("/author")
-    public List<BookDto> searchBooksAuthor(@RequestParam String author) {
-        return bookService.searchBookByAuthor(author);
+    public Page<BookDto> searchBooksAuthor(@RequestParam String author, Pageable pageable) {
+        return bookService.searchBookByAuthor(author, pageable);
     }
 
 

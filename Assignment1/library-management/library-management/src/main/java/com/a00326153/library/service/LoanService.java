@@ -9,6 +9,8 @@ import com.a00326153.library.repository.BookRepository;
 import com.a00326153.library.repository.LoanRepository;
 import com.a00326153.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -38,13 +40,13 @@ public class LoanService {
         return loanRepository.findById(id).stream().map(loan -> LoanMapper.mapToLoanDto(loan)).toList();
     }
 
-    public List<LoanDto> getLoansByUser(Long id){
+    public Page<LoanDto> getLoansByUser(Long id, Pageable pageable){
         //userRepository.findById(id);
-        return loanRepository.findByUserId(id).stream().map(loan -> LoanMapper.mapToLoanDto(loan)).toList();
+        return loanRepository.findByUserId(id, pageable).map(loan -> LoanMapper.mapToLoanDto(loan));
     }
 
-    public List<LoanDto> getLoansByBook(Long id){
-        return loanRepository.findByBookId(id).stream().map(loan -> LoanMapper.mapToLoanDto(loan)).toList();
+    public Page<LoanDto> getLoansByBook(Long id, Pageable pageable){
+        return loanRepository.findByBookId(id, pageable).map(loan -> LoanMapper.mapToLoanDto(loan));
     }
 
     public LoanDto createLoan(Long userId, Long bookId){

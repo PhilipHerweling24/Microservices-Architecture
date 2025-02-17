@@ -3,6 +3,8 @@ package com.a00326153.library.controller;
 import com.a00326153.library.dto.LoanDto;
 import com.a00326153.library.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +22,13 @@ public class LoanController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<LoanDto>> getLoansByUser(@PathVariable Long userId){
-        return ResponseEntity.ok(loanService.getLoansByUser(userId));
+    public ResponseEntity<Page<LoanDto>> getLoansByUser(@PathVariable Long userId, Pageable pageable){
+        return ResponseEntity.ok(loanService.getLoansByUser(userId, pageable));
+    }
+
+    @GetMapping("/book/{bookId}")
+    public ResponseEntity<Page<LoanDto>> getLoansByBook(@PathVariable Long bookId, Pageable pageable){
+        return ResponseEntity.ok(loanService.getLoansByBook(bookId, pageable));
     }
 
     @PostMapping("/{userId}/{bookId}")
@@ -34,7 +41,7 @@ public class LoanController {
         return loanService.getAllLoans();
     }
 
-    @GetMapping("/loans/{id}")
+    @GetMapping("/byId/{id}")
     public ResponseEntity<List<LoanDto>> getLoanById(@PathVariable Long id) {
         return ResponseEntity.ok(loanService.getLoanById(id));
     }
@@ -44,7 +51,7 @@ public class LoanController {
         return ResponseEntity.ok(loanService.returnBook(loanId));
     }
 
-    @DeleteMapping("/loans/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteLoan(@PathVariable Long id){
         loanService.deleteLoan(id);
         return ResponseEntity.noContent().build();
