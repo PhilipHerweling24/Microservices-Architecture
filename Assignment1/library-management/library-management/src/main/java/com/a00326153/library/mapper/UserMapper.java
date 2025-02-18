@@ -10,6 +10,7 @@ public class UserMapper {
         userDto.setUserId(user.getId());
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
+        userDto.addHateoasLinks(userDto.getUserId(), null);
 
         return userDto;
     }

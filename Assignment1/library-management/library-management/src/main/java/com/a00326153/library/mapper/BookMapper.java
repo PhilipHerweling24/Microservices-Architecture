@@ -11,7 +11,7 @@ public class BookMapper {
         bookDto.setBookId(book.getId());
         bookDto.setTitle(book.getTitle());
         bookDto.setAuthor(book.getAuthor());
-
+        bookDto.addHateoasLinks();
         return bookDto;
     }
 

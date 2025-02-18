@@ -15,6 +15,7 @@ public class LoanMapper {
         loanDto.setUserName(loan.getUser().getName());
         loanDto.setTitle(loan.getBook().getTitle());
         loanDto.setReturnDate(loan.getDueDate());
+        loanDto.addHateoasLinks();
 
         return loanDto;
     }

@@ -1,7 +1,10 @@
 package com.a00326153.library.service;
 
+import com.a00326153.library.constants.ServiceConstants;
 import com.a00326153.library.dto.BookDto;
 import com.a00326153.library.entity.Book;
+import com.a00326153.library.exception.EntityAlreadyExistsException;
+import com.a00326153.library.exception.ResourceNotFoundException;
 import com.a00326153.library.mapper.BookMapper;
 import com.a00326153.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class BookService {
     }
 
     public BookDto createBook(Book book){
+        if(bookRepository.existsByIsbn(book.getIsbn())){
+            throw new EntityAlreadyExistsException("Book with ISBN "+ book.getIsbn()+ " Already Exists");
+        }
         return BookMapper.mapToBookDto(bookRepository.save(book));
     }
 
@@ -33,12 +39,12 @@ public class BookService {
             existingBook.setAvailableCopies(updateBook.getAvailableCopies());
             return BookMapper.mapToBookDto(bookRepository.save(existingBook));
         })
-                .orElseThrow(() -> new RuntimeException(("Book not found with an ID of: "+id)));
+                .orElseThrow(() -> new ResourceNotFoundException((ServiceConstants.STATUS_417 + ServiceConstants.MESSAGE_417_UPDATE)));
     }
 
     public void deleteBook(Long id){
         if (! bookRepository.existsById(id)){
-            throw new RuntimeException("Book not found with ID of: "+id);
+            throw new ResourceNotFoundException(ServiceConstants.STATUS_417+ ServiceConstants.MESSAGE_417_DELETE);
         }
         bookRepository.deleteById(id);
     }
