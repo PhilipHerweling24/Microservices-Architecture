@@ -4,7 +4,7 @@ import com.a00326153.library.constants.ControllerConstants;
 import com.a00326153.library.dto.BookDto;
 import com.a00326153.library.dto.ResponseDto;
 import com.a00326153.library.entity.Book;
-import com.a00326153.library.service.BookService;
+import com.a00326153.library.serviceImpl.BookServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,10 +19,10 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
 
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
     @Autowired
-    public BookController(BookService bookService){
+    public BookController(BookServiceImpl bookService){
         this.bookService = bookService;
     }
 

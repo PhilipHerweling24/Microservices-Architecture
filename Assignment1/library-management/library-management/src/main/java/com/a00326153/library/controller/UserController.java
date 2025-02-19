@@ -4,7 +4,7 @@ import com.a00326153.library.constants.ControllerConstants;
 import com.a00326153.library.dto.ResponseDto;
 import com.a00326153.library.dto.UserDto;
 import com.a00326153.library.entity.User;
-import com.a00326153.library.service.UserService;
+import com.a00326153.library.serviceImpl.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userSerivce;
+    private UserServiceImpl userSerivce;
 
 
     //Creates a User

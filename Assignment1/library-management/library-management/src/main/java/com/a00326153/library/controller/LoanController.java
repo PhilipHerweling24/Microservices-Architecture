@@ -3,7 +3,7 @@ package com.a00326153.library.controller;
 import com.a00326153.library.constants.ControllerConstants;
 import com.a00326153.library.dto.LoanDto;
 import com.a00326153.library.dto.ResponseDto;
-import com.a00326153.library.service.LoanService;
+import com.a00326153.library.serviceImpl.LoanServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,10 +20,10 @@ import java.util.List;
 @RequestMapping("/loans")
 public class LoanController {
 
-    private final LoanService loanService;
+    private final LoanServiceImpl loanService;
 
     @Autowired
-    public LoanController(LoanService loanService){
+    public LoanController(LoanServiceImpl loanService){
         this.loanService = loanService;
     }
 
