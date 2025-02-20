@@ -46,13 +46,15 @@ public class UserController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseDto> updateUser(@Valid@PathVariable Long id, @Valid@RequestBody UserDto userDto) {
         userSerivce.updateUser(id, userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(ControllerConstants.STATUS_201, ControllerConstants.MESSAGE_201_USER_UPDATE));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(ControllerConstants.STATUS_201,
+                ControllerConstants.MESSAGE_201_USER_UPDATE));
     }
 
     //Deletes a USer, using there USer ID
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDto> deleteUser(@Valid@PathVariable Long id) {
         userSerivce.deleteUser(id);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(ControllerConstants.STATUS_201, ControllerConstants.MESSAGE_201_USER_DELETE));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(ControllerConstants.STATUS_201,
+                ControllerConstants.MESSAGE_201_USER_DELETE));
     }
 }

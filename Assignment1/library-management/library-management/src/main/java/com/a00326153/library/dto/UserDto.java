@@ -2,6 +2,7 @@ package com.a00326153.library.dto;
 
 import com.a00326153.library.controller.LoanController;
 import com.a00326153.library.controller.UserController;
+import com.a00326153.library.entity.Loan;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,6 +12,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.RepresentationModel;
+
+import java.util.List;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
@@ -24,6 +28,8 @@ public class UserDto extends RepresentationModel<UserDto>{
     @NotBlank(message = "Email can't be left blank.")
     @Email(message = "Invalid format for an email")
     private String email;
+
+    private List<LoanDto> loans;
 
 
     public void addHateoasLinks(Long userId, Pageable pageable){
